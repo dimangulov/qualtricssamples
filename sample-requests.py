@@ -11,7 +11,9 @@ def print_dict(label, obj):
             print(next_label, " - ", next_obj)
 
 
-XAPITOKEN = "OG3T44R1Wh1qOSbNvVJ2LR2IOYBuVXcoHlrSFCIr"
+#TODO your token is here https://experience.kpmgatlas.de/Q/QualtricsIdsSection/IdsSection
+XAPITOKEN = "PUTYOURAPITOKENHERE"
+
 headers = {"X-API-TOKEN": XAPITOKEN}
 
 baseUrl = "https://fra1.qualtrics.com/API/v3"
@@ -20,7 +22,7 @@ surveyUrl = "/surveys"
 surveysResponse = requests.get(baseUrl+surveyUrl, headers=headers)
 surveys = surveysResponse.json()
 
-# print(surveys)
+print(surveys)
 
 for survey in surveys['result']['elements']:
     print(survey['id'], "\t", survey['name'])
