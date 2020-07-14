@@ -12,7 +12,7 @@ def print_dict(label, obj):
 
 
 #TODO your token is here https://experience.kpmgatlas.de/Q/QualtricsIdsSection/IdsSection
-XAPITOKEN = "PUTYOURAPITOKENHERE"
+XAPITOKEN = "PUTYOURTOKENHERE"
 
 headers = {"X-API-TOKEN": XAPITOKEN}
 
@@ -29,10 +29,40 @@ for survey in surveys['result']['elements']:
 
 # print("Choose one of them, print id")
 # survey_id = input()
-survey_id = surveys['result']['elements'][0]['id']
+survey_id = "SV_a2xyo21UcwnW657"
+# surveys['result']['elements'][0]['id']
 surveyDefinitionUrl = "/survey-definitions/"+survey_id
-surveysDefinitionResponse = requests.get(baseUrl+surveyDefinitionUrl, headers=headers)
-surveyDefinition = surveysDefinitionResponse.json()
 
-print_dict("survey", surveyDefinition)
+# surveysDefinitionResponse = requests.get(baseUrl+surveyDefinitionUrl, headers=headers)
+#surveyDefinition = surveysDefinitionResponse.json()
+
+# print(surveyDefinition)
+
+copyHeaders = {
+    "X-API-TOKEN": XAPITOKEN,
+    "X-COPY-SOURCE": survey_id,
+    "X-COPY-DESTINATION-OWNER": "UR_dgLbPfSCQScCFX7",
+    "Content-Type": "application/json"}
+
+surveyResponse = requests.get(baseUrl+"/surveys/"+survey_id, headers=headers)
+surveyR = surveyResponse.json()["result"]
+print(surveyR)
+print(surveyR["name"])
+surveyR["name"] = "some new name - 1"
+print(surveyR["name"])
+
+newName = input("Type name")
+body = {"name": newName}
+print(body)
+postDefinitionResult = requests.post(baseUrl+"/surveys", json=body,  headers=copyHeaders)
+print(postDefinitionResult)
+print(postDefinitionResult.json())
+newSurveyId = postDefinitionResult.json()["result"]["id"]
+
+updateHeaders = {
+    "X-API-TOKEN": XAPITOKEN,
+    "Content-Type": "application/json"}
+updateResult = requests.put(baseUrl+"/surveys/"+newSurveyId, json=body,  headers=updateHeaders)
+print(updateResult)
+# print_dict("survey", surveyDefinition)
 
